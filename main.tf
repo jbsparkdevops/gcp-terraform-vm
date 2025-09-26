@@ -5,7 +5,7 @@ provider "google" {
 }
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "terraform-vm"
+  name         = "terraform-vm1"
   machine_type = "e2-micro"
   zone         = var.zone
 
