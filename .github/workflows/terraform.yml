@@ -10,40 +10,35 @@ on:
 
 jobs:
   terraform:
+    name: Terraform Workflow
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: Authenticate with Google Cloud
+      - name: 🔐 Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Export GCP credentials file
-        run: echo "${{ secrets.GCP_CREDENTIALS }}" > credentials.json
-
-      - name: Set GOOGLE_APPLICATION_CREDENTIALS env var
-        run: echo "GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/credentials.json" >> $GITHUB_ENV
-
-      - name: Setup Terraform
+      - name: 🛠️ Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: latest
 
-      - name: Terraform Init
+      - name: 📦 Terraform Init
         run: terraform init
 
-      - name: Terraform Format
+      - name: 🧹 Terraform Format
         run: terraform fmt -recursive
 
-      - name: Terraform Validate
+      - name: ✅ Terraform Validate
         run: terraform validate
 
-      - name: Terraform Plan
-        run: terraform plan -var="project=test-project-473300" -var="region=us-central1" -var="zone=us-central1-a" -out=tfplan
+      - name: 📊 Terraform Plan
+        run: terraform plan -var-file="terraform.tfvars" -out=tfplan
 
-      - name: Terraform Apply (on push)
+      - name: 🚀 Terraform Apply (on push)
         if: github.event_name == 'push'
         run: terraform apply -auto-approve tfplan
