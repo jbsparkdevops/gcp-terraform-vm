@@ -37,13 +37,15 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan \
-               -var="credentials_json=${{ secrets.GCP_CREDENTIALS }}" \
-               -var="project=test-project-473300" \
-               -var="region=us-central1" \
-               -var="zone=us-central1-a" \
-               -out=tfplan
+        run: |
+          terraform plan \
+            -var="credentials_json=${{ secrets.GCP_CREDENTIALS }}" \
+            -var="project=test-project-473300" \
+            -var="region=us-central1" \
+            -var="zone=us-central1-a" \
+            -out=tfplan
 
       - name: Terraform Apply (on push)
         if: github.event_name == 'push'
-        run: terraform apply -auto-approve tfplan
+        run: |
+          terraform apply -auto-approve tfplan
