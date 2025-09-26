@@ -1,3 +1,13 @@
+name: Terraform GCP CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -10,11 +20,6 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: latest
-
       - name: Export GOOGLE_CREDENTIALS env var
         run: echo "$GCP_CREDENTIALS" > credentials.json
         env:
@@ -24,6 +29,11 @@ jobs:
         run: echo "GOOGLE_CREDENTIALS=${GCP_CREDENTIALS}" >> $GITHUB_ENV
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: latest
 
       - name: Terraform Init
         run: terraform init
