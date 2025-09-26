@@ -1,6 +1,6 @@
 project_id            = "test-project-473300"
 region                = "us-central1"
 zone                  = "us-central1-c"
-instance_name         = "vm-from-tf"
+instance_name         = "test-instance"
 subnetwork            = "projects/test-project-473300/regions/us-central1/subnetworks/default"
 service_account_email = "1026253397763-compute@developer.gserviceaccount.com"
